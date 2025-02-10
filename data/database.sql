@@ -7,3 +7,4 @@ create table if not exists `tarefa`(
     `titulo` varchar(60) not null,
     `data_conclusao` datetime 
 )
+
