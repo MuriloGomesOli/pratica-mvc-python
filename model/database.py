@@ -69,8 +69,3 @@ class Database:
             return None
        
  
-
-db = Database()
-db.conectar()
-print(db.consultar('select * from tarefa'))
-db.desconectar()
