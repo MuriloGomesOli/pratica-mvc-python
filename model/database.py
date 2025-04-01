@@ -67,5 +67,5 @@ class Database:
         except Error as e:
             print(f'Erro de consulta: {e}')
             return None
-       
- 
+        
+    

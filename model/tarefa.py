@@ -1,11 +1,10 @@
-from database import Database
+from model.database import Database
 
 class Tarefa:
-    def __init__(self, titulo, data_conclusao, id):
+    def __init__(self, titulo, id=None, data_conclusao=None):
         self.id = id
         self.titulo = titulo
         self.data_conclusao = data_conclusao
-        
 
     def salvarTarefa(self):
         """Salva uma nova tarefa no banco de dados"""
@@ -17,25 +16,65 @@ class Tarefa:
         db.executar(sql, params)
         db.desconectar()
 
+    @staticmethod
     def listarTarefas():
         """Retornar uma lista com todas as tarefas cadastradas."""
         db = Database()
         db.conectar()
 
-        sql = 'SELECT id, titulo, data_conclusao FROM  tarefa'
-        tarefas = db.consultar
+        sql = 'SELECT id, titulo, data_conclusao FROM tarefa'
+        tarefas = db.consultar(sql)
         db.desconectar()
         return tarefas if tarefas else []
-    
-    def apagarTarefa(self):
-        """Apaga uma tarefa cadastrada no bcd."""
+
+    @staticmethod
+    def apagarTarefa(idTarefa):
+        """Apaga uma tarefa cadastrada no banco de dados."""
         db = Database()
         db.conectar()
 
         sql = 'DELETE FROM tarefa WHERE id = %s'
-        params = (self.id,)
+        params = (idTarefa,)
         db.executar(sql, params)
         db.desconectar()
 
-tarefa = Tarefa(2, 'Teste de tarefa', None)
-tarefa.apagarTarefa()
+    @staticmethod
+    def editarTarefa(idTarefa, titulo, data_conclusao):
+        """Edita uma tarefa cadastrada no banco de dados."""
+        db = Database()
+        db.conectar()
+
+        sql = 'UPDATE tarefa SET titulo = %s, data_conclusao = %s WHERE id = %s'
+        params = (titulo, data_conclusao, idTarefa)
+
+        db.executar(sql, params)
+        db.desconectar()
+
+    @staticmethod
+    def buscarPorId(idTarefa):
+        """Busca uma tarefa pelo ID"""
+        db = Database()
+        db.conectar()
+
+        sql = "SELECT id, titulo, data_conclusao FROM tarefa WHERE id = %s"
+        resultado = db.consultar(sql, (idTarefa,))
+
+        db.desconectar()
+
+        if resultado and len(resultado) > 0:  # Garante que há um resultado antes de acessar [0]
+            return {
+                'id': resultado[0][0],
+                'titulo': resultado[0][1],
+                'data_conclusao': resultado[0][2]
+            }
+        else:
+            return None  # Retorna None se não encontrou
+
+
+
+# Testando a função buscarPorId
+tarefa = Tarefa.buscarPorId(2)
+if tarefa:
+    print("Tarefa encontrada:", tarefa)
+else:
+    print("Tarefa não encontrada.")
