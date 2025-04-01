@@ -13,9 +13,13 @@
         {% for tarefa in tarefas %}
 <li>
                 {{ tarefa.titulo }} - {{ tarefa.data_conclusao }}
-<a href="{{ url_for('delete', idTarefa=tarefa.id) }}">Apagar</a>
+
+<a href="{{ url_for('delete', idTarefa=tarefa.id) }}">
+    Apagar
+</a>
  
                 <form method="POST" action="{{ url_for('editar', idTarefa=tarefa.id) }}">
+                    
 <input type="hidden" name="acao" value="editar">
 <input type="hidden" name="idTarefa" value="{{ tarefa.id }}">
 <input type="text" name="titulo" value="{{ tarefa.titulo }}" placeholder="Reescreva a sua tarefa" required>
