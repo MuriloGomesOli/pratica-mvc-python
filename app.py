@@ -19,7 +19,6 @@ def editar(idTarefa):
     titulo = request.form['titulo']
     data_conclusao = request.form['data_conclusao']
 
-    # Atualiza a tarefa no banco de dados
     Tarefa.editarTarefa(idTarefa, titulo, data_conclusao)
     return redirect('/')
 

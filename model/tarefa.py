@@ -41,6 +41,7 @@ class Tarefa:
     @staticmethod
     def editarTarefa(idTarefa, titulo, data_conclusao):
         """Edita uma tarefa cadastrada no banco de dados."""
+        
         db = Database()
         db.conectar()
 
@@ -61,18 +62,17 @@ class Tarefa:
 
         db.desconectar()
 
-        if resultado and len(resultado) > 0:  # Garante que há um resultado antes de acessar [0]
+        if resultado and len(resultado) > 0:  
             return {
                 'id': resultado[0][0],
                 'titulo': resultado[0][1],
                 'data_conclusao': resultado[0][2]
             }
         else:
-            return None  # Retorna None se não encontrou
+            return None 
 
 
 
-# Testando a função buscarPorId
 tarefa = Tarefa.buscarPorId(2)
 if tarefa:
     print("Tarefa encontrada:", tarefa)
